@@ -90,19 +90,15 @@ app.post('/create', async (c) => {
 });
 
 /**
- * GET /api/account/:email
- * Retrieves account information
+ * GET /api/account/list
+ * Lists all accounts (demo only)
  */
-app.get('/:email', (c) => {
-  const email = c.req.param('email');
-  
-  const account = accounts.get(email);
-  
-  if (!account) {
-    return c.json({ error: 'Account not found' }, 404);
-  }
-
-  return c.json({ account });
+app.get('/list', (c) => {
+  const accountList = Array.from(accounts.values());
+  return c.json({
+    count: accountList.length,
+    accounts: accountList
+  });
 });
 
 /**
@@ -136,15 +132,19 @@ app.post('/verify-passkey', async (c) => {
 });
 
 /**
- * GET /api/account/list
- * Lists all accounts (demo only)
+ * GET /api/account/:email
+ * Retrieves account information
  */
-app.get('/list', (c) => {
-  const accountList = Array.from(accounts.values());
-  return c.json({
-    count: accountList.length,
-    accounts: accountList
-  });
+app.get('/:email', (c) => {
+  const email = c.req.param('email');
+  
+  const account = accounts.get(email);
+  
+  if (!account) {
+    return c.json({ error: 'Account not found' }, 404);
+  }
+
+  return c.json({ account });
 });
 
 /**
